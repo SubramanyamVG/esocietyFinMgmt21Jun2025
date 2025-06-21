@@ -1,0 +1,49 @@
+<!-- <div class="container mt-5">
+    <div class="card p-4 mx-auto" style="max-width: 400px;">
+      <h3 class="mb-3 text-center">eSociety Login</h3>
+      <form (submit)="login()">
+        <div class="mb-3">
+          <input [(ngModel)]="username" name="username" class="form-control" placeholder="Username" required />
+        </div>
+        <div class="mb-3">
+          <input [(ngModel)]="password" name="password" type="password" class="form-control" placeholder="Password" required />
+        </div>
+        <button class="btn btn-primary w-100">Login</button>
+      </form>
+    </div>
+  </div> -->
+
+  <div class="container-fluid vh-100">
+  <div class="row h-100">
+    <!-- Left Blue Panel -->
+    <div class="col-md-6 d-none d-md-flex bg-blue text-white flex-column justify-content-center align-items-center">
+      <!-- <img src="assets/logo.png" alt="eSociety Logo" class="mb-4" style="width: 120px;" /> -->
+      <div class="text-center px-4">
+        <h1 class="display-5 fw-bold">Welcome to eSociety</h1>
+        <p class="lead">Smartly manage your housing society’s finances and operations</p>
+      </div>
+    </div>
+
+    <!-- Right Login Box -->
+    <div class="col-md-6 d-flex justify-content-center align-items-center bg-light">
+      <div class="login-box p-4 shadow rounded animate-fade-in">
+        <h3 class="mb-4 text-center">Login</h3>
+        <form (ngSubmit)="login()">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input [(ngModel)]="username" name="username" class="form-control" placeholder="Username" required />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input [(ngModel)]="password" name="password" type="password" class="form-control" placeholder="Password" required />
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+        <!-- <div class="text-center mt-3">
+          <span>New here?</span> <a routerLink="/register" class="text-primary fw-semibold">Register</a>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+
