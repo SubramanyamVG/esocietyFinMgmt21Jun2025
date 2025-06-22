@@ -1,0 +1,54 @@
+.activities-card {
+  border-radius: 12px;
+
+  .card-header {
+    font-weight: 600;
+  }
+
+  .btn-light {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    border-radius: 8px;
+  }
+
+  .activity-box {
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+      transform: scale(1.01);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    h6 {
+      font-size: 1.1rem;
+    }
+
+    p {
+      font-size: 0.95rem;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.4em 0.7em;
+    }
+
+    .btn {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .btn-outline-primary:hover {
+    background-color: #e3f2fd;
+  }
+
+  .btn-outline-danger:hover {
+    background-color: #fdecea;
+  }
+  }
+}
+
+.modal.show.d-block {
+  display: block;
+  z-index: 1050;
+}
+

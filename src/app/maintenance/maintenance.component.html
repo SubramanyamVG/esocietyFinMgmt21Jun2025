@@ -1,14 +1,84 @@
-<div class="container mt-4">
-    <h3>Maintenance Payment Records</h3>
-    <table class="table table-bordered table-sm">
-      <thead><tr><th>Family</th><th>Month</th><th>Amount</th><th>Status</th></tr></thead>
-      <tbody>
-        <tr *ngFor="let p of payments">
-          <td>{{ p.family }}</td>
-          <td>{{ p.month }}</td>
-          <td>{{ p.amount }}</td>
-          <td>{{ p.status }}</td>
-        </tr>
-      </tbody>
-    </table>
+<!-- Maintenance Card -->
+<div class="card shadow-sm maintenance-card">
+  <div class="card-header app-theme-bgcolor text-white d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">Maintenance Records</h5>
+    <button class="btn btn-light btn-sm" (click)="openModal()">+ Generate Maintenance</button>
   </div>
+
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Month</th>
+            <th>Due Date</th>
+            <th>Amount (₹)</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of maintenanceRecords; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ record.month }}</td>
+            <td>{{ record.dueDate }}</td>
+            <td>{{ record.amount }}</td>
+            <td>
+              <span class="badge"
+                    [ngClass]="{
+                      'bg-success': record.status === 'Paid',
+                      'bg-danger': record.status === 'Unpaid'
+                    }">
+                {{ record.status }}
+              </span>
+            </td>
+          </tr>
+          <tr *ngIf="maintenanceRecords.length === 0">
+            <td colspan="5" class="text-center">No maintenance records found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Generate Maintenance Modal -->
+<div class="modal fade" tabindex="-1"
+     [ngClass]="{ 'show d-block': showModal }"
+     [ngStyle]="{ 'background-color': 'rgba(0,0,0,0.5)' }">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]="maintenanceForm" (ngSubmit)="generateMaintenance()">
+        <div class="modal-header">
+          <h5 class="modal-title">Generate Maintenance</h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label>Month</label>
+            <input type="text" formControlName="month" class="form-control" placeholder="e.g. July 2025" />
+          </div>
+          <div class="mb-3">
+            <label>Due Date</label>
+            <input type="date" formControlName="dueDate" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label>Amount (₹)</label>
+            <input type="number" formControlName="amount" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label>Status</label>
+            <select formControlName="status" class="form-select">
+              <option value="Unpaid">Unpaid</option>
+              <option value="Paid">Paid</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="maintenanceForm.invalid">Save</button>
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

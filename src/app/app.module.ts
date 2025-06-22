@@ -6,20 +6,32 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { FamilyListComponent } from './families/family-list.component';
+import { PaymentsComponent } from './payments/payments/payments.component';
+import { ActivitiesComponent } from './activities/activities.component';
+import { ReportsComponent } from './reports/reports.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     DashboardComponent,
+    FamilyListComponent,
+    MaintenanceComponent,
+    PaymentsComponent,
+    ActivitiesComponent,
+    ReportsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

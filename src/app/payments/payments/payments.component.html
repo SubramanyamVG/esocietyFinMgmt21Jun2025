@@ -1,0 +1,112 @@
+<!-- Card Header -->
+<div class="card shadow-sm payments-card">
+<div class="card-header app-theme-bgcolor text-white d-flex justify-content-between align-items-center">
+  <h5 class="mb-0">Payments</h5>
+  <button class="btn btn-light btn-sm" (click)="openModal()">+ Record Payment</button>
+</div>
+
+<!-- Existing table ... -->
+
+<div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Resident</th>
+            <th>Apartment</th>
+            <th>Month</th>
+            <th>Amount (₹)</th>
+            <th>Date</th>
+            <th>Mode</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let payment of payments; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ payment.name }}</td>
+            <td>{{ payment.apartment }}</td>
+            <td>{{ payment.month }}</td>
+            <td>{{ payment.amount }}</td>
+            <td>{{ payment.date }}</td>
+            <td>{{ payment.mode }}</td>
+            <td>
+              <span class="badge"
+                    [ngClass]="{
+                      'bg-success': payment.status === 'Success',
+                      'bg-warning text-dark': payment.status === 'Pending',
+                      'bg-danger': payment.status === 'Failed'
+                    }">
+                {{ payment.status }}
+              </span>
+            </td>
+          </tr>
+          <tr *ngIf="payments.length === 0">
+            <td colspan="8" class="text-center">No payment records found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+ 
+
+<!-- Record Payment Modal -->
+<div class="modal fade" tabindex="-1"
+     [ngClass]="{ 'show d-block': showModal }"
+     [ngStyle]="{ 'background-color': 'rgba(0,0,0,0.5)' }">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]="paymentForm" (ngSubmit)="savePayment()">
+        <div class="modal-header">
+          <h5 class="modal-title">Record Payment</h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label>Resident Name</label>
+            <input type="text" class="form-control" formControlName="name" />
+          </div>
+          <div class="mb-3">
+            <label>Apartment</label>
+            <input type="text" class="form-control" formControlName="apartment" />
+          </div>
+          <div class="mb-3">
+            <label>Month</label>
+            <input type="text" class="form-control" formControlName="month" placeholder="e.g. June 2025" />
+          </div>
+          <div class="mb-3">
+            <label>Amount (₹)</label>
+            <input type="number" class="form-control" formControlName="amount" />
+          </div>
+          <div class="mb-3">
+            <label>Payment Date</label>
+            <input type="date" class="form-control" formControlName="date" />
+          </div>
+          <div class="mb-3">
+            <label>Payment Mode</label>
+            <select class="form-select" formControlName="mode">
+              <option value="UPI">UPI</option>
+              <option value="Cash">Cash</option>
+              <option value="Card">Card</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>Status</label>
+            <select class="form-select" formControlName="status">
+              <option value="Success">Success</option>
+              <option value="Pending">Pending</option>
+              <option value="Failed">Failed</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" [disabled]="paymentForm.invalid">Save</button>
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

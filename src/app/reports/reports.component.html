@@ -1,0 +1,52 @@
+<div class="reports-container">
+  <div class="row g-3">
+
+    <!-- Filters -->
+<div class="d-flex flex-wrap justify-content-end gap-2 mb-3">
+  <select class="form-select form-select-sm w-auto" [(ngModel)]="selectedMonth">
+    <option value="">All Months</option>
+    <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+  </select>
+
+  <select class="form-select form-select-sm w-auto" [(ngModel)]="selectedYear">
+    <option value="">All Years</option>
+    <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+  </select>
+</div>
+    <!-- Summary Cards -->
+    <div class="col-md-3" *ngFor="let item of [
+      { label: 'Total Collections', value: summary.totalCollections, icon: 'bi-currency-rupee', class: 'bg-success' },
+      { label: 'Pending Dues', value: summary.pendingDues, icon: 'bi-exclamation-triangle', class: 'bg-warning text-dark' },
+      { label: 'Expenses', value: summary.totalExpenses, icon: 'bi-graph-down', class: 'bg-danger' },
+      { label: 'Families Paid', value: summary.familiesContributed, icon: 'bi-people', class: 'bg-info text-dark' }
+    ]">
+      <div class="card text-white h-100 shadow-sm" [ngClass]="item.class">
+        <div class="card-body d-flex align-items-center justify-content-between">
+          <div>
+            <h6 class="card-title mb-1">{{ item.label }}</h6>
+            <h4 class="fw-bold mb-0">₹{{ item.value }}</h4>
+          </div>
+          <i class="bi" [ngClass]="item.icon" style="font-size: 2rem;"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity Logs -->
+<div class="card shadow-sm mt-4">
+  <div class="card-header app-theme-bgcolor text-white fw-semibold">Recent Activity Logs</div>
+  <div class="card-body p-0">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item" *ngFor="let log of filteredLogs">
+        <div class="d-flex justify-content-between">
+          <span>{{ log.action }}</span>
+          <small class="text-muted">{{ log.date }}</small>
+        </div>
+      </li>
+      <li *ngIf="filteredLogs.length === 0" class="list-group-item text-center text-muted">
+        No activities for selected period.
+      </li>
+    </ul>
+  </div>
+</div>
+</div>

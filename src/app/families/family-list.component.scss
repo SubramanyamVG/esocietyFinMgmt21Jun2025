@@ -1,0 +1,12 @@
+.card-header {
+  font-weight: 600;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.modal.show.d-block {
+  display: block;
+  z-index: 1050;
+}
