@@ -1,0 +1,14 @@
+<div class="container mt-4">
+    <h3>Maintenance Payment Records</h3>
+    <table class="table table-bordered table-sm">
+      <thead><tr><th>Family</th><th>Month</th><th>Amount</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let p of payments">
+          <td>{{ p.family }}</td>
+          <td>{{ p.month }}</td>
+          <td>{{ p.amount }}</td>
+          <td>{{ p.status }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

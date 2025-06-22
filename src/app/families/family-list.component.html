@@ -1,0 +1,14 @@
+<div class="container mt-4">
+    <h3>Family List</h3>
+    <a routerLink="/families/add" class="btn btn-sm btn-success mb-2">Add Family</a>
+    <table class="table table-bordered table-sm">
+      <thead><tr><th>Name</th><th>Apartment</th><th>Email</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let f of families">
+          <td>{{ f.name }}</td>
+          <td>{{ f.apartment }}</td>
+          <td>{{ f.email }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

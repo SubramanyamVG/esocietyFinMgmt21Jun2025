@@ -1,0 +1,24 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
+import { FamilyListComponent } from './family-list.component';
+import { AddFamilyComponent } from './add-family.component';
+
+const routes: Routes = [
+  { path: '', component: FamilyListComponent },
+  { path: 'add', component: AddFamilyComponent }
+];
+
+@NgModule({
+  declarations: [
+    FamilyListComponent,
+    AddFamilyComponent
+  ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule.forChild(routes)
+  ]
+})
+export class FamiliesModule {}
