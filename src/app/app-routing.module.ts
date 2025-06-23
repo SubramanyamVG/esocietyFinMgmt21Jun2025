@@ -4,7 +4,7 @@ import { LoginComponent } from './auth/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { ActivitiesComponent } from './activities/activities.component';
-import { FamilyListComponent } from './families/family-list.component';
+import { MemberListComponent } from './member/member-list.component';
 import { PaymentsComponent } from './payments/payments/payments.component';
 import { ReportsComponent } from './reports/reports.component';
 
@@ -48,12 +48,12 @@ const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     children: [
-      { path: 'families', component: FamilyListComponent },
+      { path: 'members', component: MemberListComponent },
       { path: 'maintenance', component: MaintenanceComponent },
       { path: 'payments', component: PaymentsComponent },
       { path: 'activities', component: ActivitiesComponent },
       { path: 'reports', component: ReportsComponent },
-      { path: '', redirectTo: 'families', pathMatch: 'full' } // default child
+      { path: '', redirectTo: 'members', pathMatch: 'full' } // default child
     ]
   },
   // { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // app default

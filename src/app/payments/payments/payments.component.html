@@ -3,6 +3,7 @@
 <div class="card-header app-theme-bgcolor text-white d-flex justify-content-between align-items-center">
   <h5 class="mb-0">Payments</h5>
   <button class="btn btn-light btn-sm" (click)="openModal()">+ Record Payment</button>
+  <!-- <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#paymentModal">+ Record Payment</button> -->
 </div>
 
 <!-- Existing table ... -->
@@ -26,7 +27,7 @@
           <tr *ngFor="let payment of payments; index as i">
             <td>{{ i + 1 }}</td>
             <td>{{ payment.name }}</td>
-            <td>{{ payment.apartment }}</td>
+            <td>{{ payment.apartmentNumber }}</td>
             <td>{{ payment.month }}</td>
             <td>{{ payment.amount }}</td>
             <td>{{ payment.date }}</td>
@@ -51,62 +52,40 @@
   </div>
   </div>
  
-
-<!-- Record Payment Modal -->
-<div class="modal fade" tabindex="-1"
-     [ngClass]="{ 'show d-block': showModal }"
-     [ngStyle]="{ 'background-color': 'rgba(0,0,0,0.5)' }">
+  <!-- Record Payment Modal -->
+<div #paymentModal class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content">
-      <form [formGroup]="paymentForm" (ngSubmit)="savePayment()">
-        <div class="modal-header">
-          <h5 class="modal-title">Record Payment</h5>
-          <button type="button" class="btn-close" (click)="closeModal()"></button>
+    <form (ngSubmit)="addPayment()" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="paymentModalLabel">Record New Payment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="mb-2">
+          <label>Resident Name</label>
+          <select [(ngModel)]="newPayment.name" name="name" class="form-select" required>
+            <option *ngFor="let member of members" [value]="member.name">{{ member.name }} ({{ member.apartmentNumber }})</option>
+          </select>
         </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label>Resident Name</label>
-            <input type="text" class="form-control" formControlName="name" />
-          </div>
-          <div class="mb-3">
-            <label>Apartment</label>
-            <input type="text" class="form-control" formControlName="apartment" />
-          </div>
-          <div class="mb-3">
-            <label>Month</label>
-            <input type="text" class="form-control" formControlName="month" placeholder="e.g. June 2025" />
-          </div>
-          <div class="mb-3">
-            <label>Amount (₹)</label>
-            <input type="number" class="form-control" formControlName="amount" />
-          </div>
-          <div class="mb-3">
-            <label>Payment Date</label>
-            <input type="date" class="form-control" formControlName="date" />
-          </div>
-          <div class="mb-3">
-            <label>Payment Mode</label>
-            <select class="form-select" formControlName="mode">
-              <option value="UPI">UPI</option>
-              <option value="Cash">Cash</option>
-              <option value="Card">Card</option>
-              <option value="Bank Transfer">Bank Transfer</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label>Status</label>
-            <select class="form-select" formControlName="status">
-              <option value="Success">Success</option>
-              <option value="Pending">Pending</option>
-              <option value="Failed">Failed</option>
-            </select>
-          </div>
+        <div class="mb-2">
+          <label>Month</label>
+          <input type="month" [(ngModel)]="newPayment.month" name="month" class="form-control" required />
         </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary" [disabled]="paymentForm.invalid">Save</button>
-          <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        <div class="mb-2">
+          <label>Amount</label>
+          <input type="number" [(ngModel)]="newPayment.amount" name="amount" class="form-control" required />
         </div>
-      </form>
-    </div>
+        <div class="form-check">
+          <input type="checkbox" [(ngModel)]="newPayment.fine" name="fine" class="form-check-input" id="fineCheck">
+          <label class="form-check-label" for="fineCheck">Fine Applicable (₹100)</label>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success">Save Payment</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </form>
   </div>
 </div>

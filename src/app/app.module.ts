@@ -8,7 +8,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
-import { FamilyListComponent } from './families/family-list.component';
+import { MemberListComponent } from './member/member-list.component';
 import { PaymentsComponent } from './payments/payments/payments.component';
 import { ActivitiesComponent } from './activities/activities.component';
 import { ReportsComponent } from './reports/reports.component';
@@ -19,7 +19,7 @@ import { CommonModule } from '@angular/common';
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    FamilyListComponent,
+    MemberListComponent,
     MaintenanceComponent,
     PaymentsComponent,
     ActivitiesComponent,
