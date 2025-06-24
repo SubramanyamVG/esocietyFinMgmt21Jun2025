@@ -102,6 +102,7 @@ export class MemberListComponent implements OnInit {
     this.selectedIndex = -1;
   }
 
+  // Function to save or update member details
   saveMember() {
     if (this.memberForm.valid) {
       const memberData = this.memberForm.value;
@@ -110,9 +111,11 @@ export class MemberListComponent implements OnInit {
         memberData.memberId = 'M-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
       }
       // If editing, use the existing memberId
-      if (this.isEdit && this.selectedIndex > -1) {
+      else {
+       //write code to get memberid of the selected member from the members array
         memberData.memberId = this.members[this.selectedIndex].memberId;
       }
+      
       // Save the member data using the membersService
       this.membersService.addMember(memberData).subscribe((response: any) => {
         console.log('Member saved successfully:', response);
@@ -126,6 +129,30 @@ export class MemberListComponent implements OnInit {
       }, (error: any) => {
         console.error('Error saving member:', error);
       });
+    } else {
+      console.log('Form is invalid');
+    }
+  }
+
+  updateMember() {
+    if (this.memberForm.valid) {
+      const memberData = this.memberForm.value;
+      // Use the existing memberId for updating
+      memberData.memberId = this.members[this.selectedIndex].memberId;
+      const firebaseKey = this.getFirebaseKeyByMemberId(memberData.memberId);
+      if (firebaseKey) {
+        // Update the member data using the membersService
+        this.membersService.updateMember(firebaseKey, memberData).subscribe((response: any) => {
+          console.log('Member updated successfully:', response);
+          // Update the local members array
+          this.members[this.selectedIndex] = memberData;
+          this.closeModal();
+        }, (error: any) => {
+          console.error('Error updating member:', error);
+        });
+      } else {
+        console.warn('Firebase key not found for memberId:', memberData.memberId);
+      }
     } else {
       console.log('Form is invalid');
     }

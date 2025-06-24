@@ -29,6 +29,10 @@ export class MembersService {
     return this.http.post(`${this.baseUrl}/${this.memberListCollectionNameWithJson}`, data);
   }
 
+  updateMember(memberId: string, data: any) {
+    return this.http.put(`${this.baseUrl}/${this.memberListCollectionName}/${memberId}.json`, data);
+  }
+
  addFamily(data: any) {
     return this.http.post(`${this.baseUrl}/${this.memberListCollectionNameWithJson}`, data);
   }
