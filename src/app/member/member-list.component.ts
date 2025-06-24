@@ -20,19 +20,18 @@ export class MemberListComponent implements OnInit {
   isEdit = false;
   selectedIndex: number = -1;
   members: SocietyMember[] = []; // This will hold the list of members 
+  originalMembersObj: any; // This will hold the original list of members for comparison
 
   constructor(private fb: FormBuilder, private membersService: MembersService) {
     this.memberForm = this.fb.group({
+      memberId: [''],
       name: ['', Validators.required],
       apartmentNumber: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
     });
-
-    
   }
-  
-
+  // Sample data for testing purposes
   // members = [
   //   {
   //     name: 'Ramesh Iyer',
@@ -48,9 +47,6 @@ export class MemberListComponent implements OnInit {
   //   }
   // ];
 
-  
-  
-
   ngOnInit() {
     // Fetch the members list from the service using firebase realtime database
     this.fetchMembers();
@@ -63,18 +59,13 @@ export class MemberListComponent implements OnInit {
         console.log('Fetched members:', data);
         // Assign the fetched data to the members array
         if (!Array.isArray(data)) {
+          console.log('Data is not an array, checking for object structure...', data);
+          this.originalMembersObj = data
+
           this.members = Object.values(data || {});
           return;
         }
-        // Ensure that data is an array of SocietyMember objects
-        data = data.map(item => {
-          return {
-            name: item.name || '',
-            apartmentNumber: item.apartmentNumber || '',
-            email: item.email || '',
-            phone: item.phone || ''
-          } as SocietyMember;
-        });
+
         // Assign the processed data to the members array
         if (data.length === 0) {
           console.warn('No members found in the fetched data.');
@@ -111,23 +102,26 @@ export class MemberListComponent implements OnInit {
     this.selectedIndex = -1;
   }
 
-  //write code to save family details to  Firebase using membersService
   saveMember() {
     if (this.memberForm.valid) {
       const memberData = this.memberForm.value;
-
-       if (!this.isEdit) {
-      memberData.id = 'M-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
-    }
-      if (this.isEdit && this.selectedIndex > -1) {
-        // Update existing member
-        this.members[this.selectedIndex] = memberData;
-      } else {
-        // Add new member
-        this.members.push(memberData);
+      // Generate a unique memberId if it's a new member
+      if (!this.isEdit) {
+        memberData.memberId = 'M-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
       }
-      this.membersService.addFamily(memberData).subscribe((response: any) => {
+      // If editing, use the existing memberId
+      if (this.isEdit && this.selectedIndex > -1) {
+        memberData.memberId = this.members[this.selectedIndex].memberId;
+      }
+      // Save the member data using the membersService
+      this.membersService.addMember(memberData).subscribe((response: any) => {
         console.log('Member saved successfully:', response);
+        // Update the local members array
+        if (this.isEdit && this.selectedIndex > -1) {
+          this.members[this.selectedIndex] = memberData;
+        } else {
+          this.members.push(memberData);
+        }
         this.closeModal();
       }, (error: any) => {
         console.error('Error saving member:', error);
@@ -137,7 +131,44 @@ export class MemberListComponent implements OnInit {
     }
   }
 
-  deleteMember(member: any) {
-    this.members = this.members.filter((f: any) => f !== member);
+  deleteMember(memberId: string) {
+    //write code to delete member from firebase using member service passing firebase key from the fetched members from data object
+    const firebaseKey = this.getFirebaseKeyByMemberId(memberId);
+    if (firebaseKey) {
+      this.membersService.deleteMemberByFirebaseKey(firebaseKey).subscribe((response: any) => {
+        console.log('Member deleted successfully:', response);
+        // Remove the member from the local array
+        this.members = this.members.filter(m => m.memberId !== memberId);
+      }, (error: any) => {
+        console.error('Error deleting member:', error);
+      });
+    } else {
+      console.warn('Member not found with memberId:', memberId);
+    }
   }
+
+  //write a function to get the firebase key of the member by memberId from originalMembersObj
+  getFirebaseKeyByMemberId(memberId: string): string | null {
+    if (!this.originalMembersObj) {
+      console.warn('Original members object is not available.');
+      return null;
+    }
+    const member = Object.values(this.originalMembersObj).find((m: any) => m.memberId === memberId);
+    if (member) {
+      const firebaseKey = Object.keys(this.originalMembersObj).find(key => this.originalMembersObj[key].memberId === memberId);
+      return firebaseKey || null;
+    }
+    console.warn('Member not found with memberId:', memberId);
+    return null;
+  }
+
+  //write a function to edit a member by passing the memberId
+  editMember(memberId: string) {
+    const member = this.members.find(m => m.memberId === memberId);
+    if (member) {
+      this.openModal(member);
+    } else {
+      console.warn('Member not found with memberId:', memberId);
+    }
+  } 
 }
