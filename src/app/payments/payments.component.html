@@ -1,0 +1,120 @@
+<div class="container mt-4">
+  <h2>Maintenance Payments</h2>
+
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Member Name</th>
+        <th>Apartment</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let m of members">
+        <td>{{ m.name }}</td>
+        <td>{{ m.apartmentNumber }}</td>
+        <td>{{ m.email }}</td>
+        <td>{{ m.phone }}</td>
+        <td>
+          <button class="btn btn-primary btn-sm" (click)="openPaymentForm(m)">Record Payment</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="showForm" class="card mt-3 p-3">
+    <h5>Record Payment for {{ selectedMember?.name }}</h5>
+    <form [formGroup]="paymentForm" (ngSubmit)="submitPayment(selectedMember?.memberId!)">
+      <div class="row mb-2">
+        <div class="col">
+          <label>Member Name</label>
+          <input type="text" class="form-control" formControlName="name" />
+        </div>
+        <div class="col">
+          <label>Apartment Number</label>
+          <input type="text" class="form-control" formControlName="apartmentNumber"/>
+        </div>
+      </div>
+
+
+      <div class="row mb-2">
+        <div class="col">
+          <label>Month</label>
+          <select class="form-control" formControlName="month">
+            <option value="">-- Select Month --</option>
+            <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+          </select>
+        </div>
+        <div class="col">
+          <label>Amount</label>
+          <input type="number" class="form-control" formControlName="amount" />
+        </div>
+        <div class="col">
+          <label>Fine</label>
+          <input type="number" class="form-control" formControlName="fine" />
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col">
+          <label>Date</label>
+          <input type="date" class="form-control" formControlName="date" />
+        </div>
+        <div class="col">
+          <label>Mode</label>
+          <select class="form-control" formControlName="mode">
+            <option>Cash</option>
+            <option>UPI</option>
+            <option>Bank Transfer</option>
+          </select>
+        </div>
+        <div class="col">
+          <label>Status</label>
+          <select class="form-control" formControlName="status">
+            <option>Paid</option>
+            <option>Pending</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn btn-success" type="submit" [disabled]="paymentForm.invalid">Submit</button>
+      <button class="btn btn-secondary ml-2" type="button" (click)="showForm = false">Cancel</button>
+    </form>
+    <div *ngIf="(selectedMember?.paymentDetails?.length ?? 0) > 0" class="mt-4">
+  <h5>Past Payments for {{ selectedMember?.name }}</h5>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Month</th>
+        <th>Amount</th>
+        <th>Fine</th>
+        <th>Date</th>
+        <th>Mode</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let payment of selectedMember?.paymentDetails">
+        <td>{{ payment.month }}</td>
+        <td>{{ payment.amount }}</td>
+        <td>{{ payment.fine || 0 }}</td>
+        <td>{{ payment.date }}</td>
+        <td>{{ payment.mode }}</td>
+        <td>
+          <span [ngClass]="{
+              'text-success': payment.status === 'Paid',
+              'text-danger': payment.status === 'Pending'
+            }">
+            {{ payment.status }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  </div>
+  
+</div>

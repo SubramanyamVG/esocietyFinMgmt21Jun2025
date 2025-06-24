@@ -1,0 +1,96 @@
+:host {
+  display: block;
+  padding: 2rem;
+  background-color: #f5f7fa;
+}
+
+h2, h5 {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.table {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+  th {
+    background-color: #ecf0f1;
+    font-weight: 500;
+    color: #34495e;
+  }
+
+  td {
+    vertical-align: middle;
+  }
+
+  tr:hover {
+    background-color: #f9f9f9;
+  }
+}
+
+.card {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  margin-top: 1.5rem;
+
+  h5 {
+    margin-bottom: 1rem;
+  }
+
+  label {
+    font-weight: 500;
+    color: #2c3e50;
+  }
+
+  input, select {
+    border-radius: 0.375rem;
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s ease-in-out;
+
+    &:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+  }
+
+  button {
+    min-width: 100px;
+  }
+}
+
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+
+  &:hover {
+    background-color: #218838;
+  }
+}
+
+.btn-secondary {
+  margin-left: 0.5rem;
+}
+
+.text-success {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.text-danger {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 1rem;
+  }
+
+  .table {
+    font-size: 0.85rem;
+  }
+}

@@ -30,7 +30,7 @@ export class MembersService {
   }
 
   updateMember(memberId: string, data: any) {
-    return this.http.put(`${this.baseUrl}/${this.memberListCollectionName}/${memberId}.json`, data);
+    return this.http.patch(`${this.baseUrl}/${this.memberListCollectionName}/${memberId}.json`, data);
   }
 
  addFamily(data: any) {
@@ -40,27 +40,7 @@ export class MembersService {
     return this.http.delete(`${this.baseUrl}/${this.memberListCollectionName}/${firebaseKey}.json`);
   }
 
-  deleteMember888(memberId: string): Observable<void> {
-    return this.getFirebaseKeyByMemberId(memberId).pipe(
-      take(1),
-      map(firebaseKey => {
-        if (firebaseKey) {
-          return firebaseKey;
-        } else {
-          console.warn('Firebase key not found for memberId:', memberId);
-          throw new Error('Firebase key not found');
-        }
-      }),
-      // switch to the delete observable if key found
-      switchMap(firebaseKey =>
-        this.http.delete<void>(`${this.baseUrl}/${this.memberListCollectionName}/${firebaseKey}.json`)
-      ),
-      catchError(err => {
-        // Optionally handle/log error here
-        return of(void 0);
-      })
-    );
-  }
+  
 
   deleteMemberByMemberId(memberId: string): Observable<void> {
   const queryUrl = `${this.baseUrl}/${this.memberListCollectionName}.json`;
@@ -96,7 +76,7 @@ export class MembersService {
     return this.http.get<any[]>(`${this.baseUrl}/payments.json`);
   }
 
-  getFirebaseKeyByMemberId(memberId: string): Observable<string | null> {
+  getFirebaseKeyByMemberId1(memberId: string): Observable<string | null> {
     const url = `${this.baseUrl}/${this.memberListCollectionNameWithJson}`;
 
     const params = new HttpParams()
@@ -108,6 +88,16 @@ export class MembersService {
       map(data => {
         const keys = Object.keys(data || {});
         return keys.length > 0 ? keys[0] : null;
+      })
+    );
+  }
+
+  updateMemberPaymentDetailsByFirebaseKey(firebaseKey: string, paymentDetails: any): Observable<any> {
+    const url = `${this.baseUrl}/${this.memberListCollectionName}/${firebaseKey}.json`;
+    return this.http.patch(url, { paymentDetails }).pipe(
+      catchError(error => {
+        console.error('Error updating payment details:', error);
+        return throwError(() => new Error('Failed to update payment details'));
       })
     );
   }

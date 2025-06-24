@@ -9,7 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { MemberListComponent } from './member/member-list.component';
-import { PaymentsComponent } from './payments/payments/payments.component';
+import { PaymentsComponent } from './payments/payments.component';
 import { ActivitiesComponent } from './activities/activities.component';
 import { ReportsComponent } from './reports/reports.component';
 import { CommonModule } from '@angular/common';
