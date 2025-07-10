@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { config } from '../../config/config.global';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { SocietyMember } from '../models/member';
-import { Observable, map, of, take, switchMap, catchError, throwError } from 'rxjs';
+import { Observable, map, of, take, switchMap, catchError, throwError, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MembersService {
+
+  private membersSubject = new BehaviorSubject<SocietyMember[]>([]);
+  members$ = this.membersSubject.asObservable(); // Expose as observable
 
   private baseUrl = config.FirebaseConfig.apiUrl; // 👈 Backend URL
   private memberListCollectionName = config.memberListCollectionName; // 👈 Collection name for members

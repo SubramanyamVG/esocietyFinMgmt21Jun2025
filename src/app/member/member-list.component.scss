@@ -10,3 +10,82 @@
   display: block;
   z-index: 1050;
 }
+
+
+//payment section
+// Payment Section Styles
+.payment-section {
+  background: #e8f6f3;
+  border: 1px solid #e3e6f0;
+  border-radius: 8px;
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+  margin-top: 1rem;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.06);
+
+  form {
+    margin-bottom: 1.5rem;
+
+    .row {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      font-weight: 500;
+      color: #495057;
+      margin-bottom: 0.25rem;
+    }
+
+    .form-control {
+      border-radius: 4px;
+      border: 1px solid #ced4da;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+      &:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0,123,255,0.08);
+      }
+    }
+
+    .btn-success {
+      min-width: 90px;
+    }
+    .btn-secondary {
+      margin-left: 0.5rem;
+    }
+  }
+
+  .past-payments-table {
+    margin-top: 1rem;
+
+    table {
+      background: #fff;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(44, 62, 80, 0.04);
+    }
+
+    th, td {
+      vertical-align: middle !important;
+      font-size: 0.97rem;
+    }
+
+    th {
+      background: #f1f3f6;
+      color: #495057;
+      font-weight: 600;
+    }
+
+    .text-success {
+      font-weight: 600;
+    }
+    .text-danger {
+      font-weight: 600;
+    }
+  }
+}
+
+// Optional: Add a subtle highlight to the active payment row
+tr.active-payment-row > td {
+  background: #eaf4ff !important;
+  // border-top: 4px solid #007bff;
+}

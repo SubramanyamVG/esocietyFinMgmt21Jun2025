@@ -10,28 +10,111 @@
       <table class="table table-bordered table-hover align-middle">
         <thead class="table-light">
           <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Apartment Number</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Actions</th>
+            <th *ngFor="let memberDetailsCol of memberDetailsCols">{{ memberDetailsCol.label }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let member of members; index as i">
-            <td>{{ i + 1 }}</td>
-            <td>{{ member.name }}</td>
-            <td>{{ member.apartmentNumber }}</td>
-            <td>{{ member.email }}</td>
-            <td>{{ member.phone }}</td>
-            <td>
-              <button class="btn btn-sm btn-outline-primary me-2" (click)="openModal(member)">Edit</button>
-              <button class="btn btn-sm btn-outline-danger" (click)="deleteMember(member.memberId)">Delete</button>
-            </td>
-          </tr>
+          <ng-container *ngFor="let member of members; index as i">
+            <tr [ngClass]="{ 'active-payment-row': activePaymentMemberId === member.memberId }">
+              <td>{{ i + 1 }}</td>
+              <td>{{ member.name }}</td>
+              <td>{{ member.apartmentNumber }}</td>
+              <td>{{ member.email }}</td>
+              <td>{{ member.phone }}</td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary me-2" (click)="openModal(member)">Edit</button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteMember(member.memberId)">Delete</button>
+                <button class="btn btn-sm btn-outline-success ms-2"
+                  (click)="openPaymentHistory(member.memberId)">Payments History</button>
+              </td>
+            </tr>
+            <tr *ngIf="activePaymentMemberId === member.memberId" class="active-payment-row">
+              <td colspan="6">
+                <!-- Payment Form -->
+                <!-- <div class="payment-section">
+        <form [formGroup]="paymentForm!" (ngSubmit)="submitPayment(member)">
+          <div class="row mb-2">
+            <div class="col">
+              <label>Month</label>
+              <select class="form-control" formControlName="month">
+                <option value="">-- Select Month --</option>
+                <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+              </select>
+            </div>
+            <div class="col">
+              <label>Amount</label>
+              <input type="number" class="form-control" formControlName="amount" />
+            </div>
+            <div class="col">
+              <label>Fine</label>
+              <input type="number" class="form-control" formControlName="fine" />
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col">
+              <label>Date</label>
+              <input type="date" class="form-control" formControlName="date" />
+            </div>
+            <div class="col">
+              <label>Mode</label>
+              <select class="form-control" formControlName="mode">
+                <option>Cash</option>
+                <option>UPI</option>
+                <option>Bank Transfer</option>
+              </select>
+            </div>
+            <div class="col">
+              <label>Status</label>
+              <select class="form-control" formControlName="status">
+                <option>Paid</option>
+                <option>Pending</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-success" type="submit" [disabled]="paymentForm?.invalid">Submit</button>
+          <button class="btn btn-secondary ml-2" type="button" (click)="closePaymentSection()">Cancel</button>
+        </form>
+        </div> -->
+                <!-- Past Payments -->
+                <div *ngIf="(member.paymentDetails?.length ?? 0) > 0" class="past-payments-table">
+                  <h6>Past Payments for {{ member.name }}</h6>
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th *ngFor="let paymentCol of paymentDetailsCols">{{ paymentCol.label }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor="let payment of member.paymentDetails">
+                        <tr>
+                          <td>{{ payment.month }}</td>
+                          <td>{{ payment.amount }}</td>
+                          <td>{{ payment.fine || 0 }}</td>
+                          <td>{{ payment.date }}</td>
+                          <td>{{ payment.mode }}</td>
+                          <td>
+                            <span [ngClass]="{
+                    'text-success': payment.status === paymentStatuses.PAID,
+                    'text-danger': payment.status === paymentStatuses.PENDING,
+                    'text-warning': payment.status === paymentStatuses.FAILED
+                  }">
+                              {{ payment.status }}
+                            </span>
+                          </td>
+                        </tr>
+                      </ng-container>
+                        
+                    </tbody>
+                  </table>
+                </div>
+                <div *ngIf="(member.paymentDetails?.length ?? 0) === 0">
+                  <p class="text-center">No payment details found.</p>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
           <tr *ngIf="members?.length === 0">
-            <td colspan="6" class="text-center">No members found.</td>
+            <td colspan="6" class="text-center">No members found.</td>  
           </tr>
         </tbody>
       </table>
@@ -40,7 +123,8 @@
 </div>
 
 <!-- member Modal -->
-<div class="modal fade" tabindex="-1" [ngClass]="{ 'show d-block': showModal }" [ngStyle]="{ 'background-color': 'rgba(0,0,0,0.5)' }">
+<div class="modal fade" tabindex="-1" [ngClass]="{ 'show d-block': showModal }"
+  [ngStyle]="{ 'background-color': 'rgba(0,0,0,0.5)' }">
   <div class="modal-dialog">
     <div class="modal-content">
       <form [formGroup]="memberForm" (ngSubmit)="isEdit ? updateMember() : saveMember()">
@@ -74,4 +158,3 @@
     </div>
   </div>
 </div>
-

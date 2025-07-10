@@ -5,6 +5,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MembersService } from '../shared/services/members.service';
 import { SocietyMember } from '../shared/models/member';
+import { MONTHS_LIST, MEMBER_DETAILS_COLUMNS, PAYMENT_DETAILS_COLUMNS, PAYMENT_STATUSES } from '../shared/global/constants';
+
 
 @Component({
   selector: 'app-member-list',
@@ -22,6 +24,13 @@ export class MemberListComponent implements OnInit {
   members: SocietyMember[] = []; // This will hold the list of members 
   originalMembersObj: any; // This will hold the original list of members for comparison
 
+  activePaymentMemberId: string | null = null;
+  paymentForm: FormGroup | undefined;
+  months: string[] = MONTHS_LIST.map(month => month.value);
+  memberDetailsCols = MEMBER_DETAILS_COLUMNS;
+  paymentDetailsCols = PAYMENT_DETAILS_COLUMNS;
+  paymentStatuses = PAYMENT_STATUSES;
+
   constructor(private fb: FormBuilder, private membersService: MembersService) {
     this.memberForm = this.fb.group({
       memberId: [''],
@@ -29,6 +38,15 @@ export class MemberListComponent implements OnInit {
       apartmentNumber: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
+    });
+
+    this.paymentForm = this.fb.group({
+      month: ['', Validators.required],
+      amount: [0, [Validators.required, Validators.min(1)]],
+      fine: [0],
+      date: [new Date().toISOString().split('T')[0]],
+      mode: ['Cash', Validators.required],
+      status: ['Paid']
     });
   }
   // Sample data for testing purposes
@@ -197,5 +215,30 @@ export class MemberListComponent implements OnInit {
     } else {
       console.warn('Member not found with memberId:', memberId);
     }
-  } 
+  }
+
+  openPaymentHistory(memberId: string) {
+    this.activePaymentMemberId = memberId;
+    this.paymentForm?.reset({
+      month: '',
+      amount: 0,
+      fine: 0,
+      date: new Date().toISOString().split('T')[0],
+      mode: 'Cash',
+      status: 'Paid'
+    });
+  }
+
+  closePaymentSection() {
+    this.activePaymentMemberId = null;
+  }
+
+  submitPayment(member: SocietyMember) {
+    if (!this.paymentForm?.valid) return;
+    const payment = this.paymentForm.value;
+    if (!member.paymentDetails) member.paymentDetails = [];
+    member.paymentDetails.push(payment);
+    // Optionally, update in backend here
+    this.closePaymentSection();
+  }
 }

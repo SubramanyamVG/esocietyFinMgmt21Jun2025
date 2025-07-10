@@ -1,19 +1,4 @@
-<!-- <div class="container mt-5">
-    <div class="card p-4 mx-auto" style="max-width: 400px;">
-      <h3 class="mb-3 text-center">eSociety Login</h3>
-      <form (submit)="login()">
-        <div class="mb-3">
-          <input [(ngModel)]="username" name="username" class="form-control" placeholder="Username" required />
-        </div>
-        <div class="mb-3">
-          <input [(ngModel)]="password" name="password" type="password" class="form-control" placeholder="Password" required />
-        </div>
-        <button class="btn btn-primary w-100">Login</button>
-      </form>
-    </div>
-  </div> -->
-
-  <div class="container-fluid vh-100">
+<div class="container-fluid vh-100">
   <div class="row h-100">
     <!-- Left Blue Panel -->
     <div class="col-md-6 d-none d-md-flex bg-blue text-white flex-column justify-content-center align-items-center">
@@ -28,14 +13,20 @@
     <div class="col-md-6 d-flex justify-content-center align-items-center bg-light">
       <div class="login-box p-4 shadow rounded animate-fade-in">
         <h3 class="mb-4 text-center">Login</h3>
-        <form (ngSubmit)="login()">
+        <form (ngSubmit)="login(loginForm)" #loginForm="ngForm" class="needs-validation">
+          <label for="userType">User Type</label>
+          <select id="userType" name="usertype"  [(ngModel)]="loginData.userType" class="form-select mb-3" required>
+            <option [value]="userType" *ngFor="let userType of userTypes">{{ userType | titlecase}}</option>
+          </select>
+
           <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
-            <input [(ngModel)]="username" name="username" class="form-control" placeholder="Username" required />
+            <input [(ngModel)]="loginData.username" name="username" class="form-control" placeholder="Username" required />
           </div>
           <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input [(ngModel)]="password" name="password" type="password" class="form-control" placeholder="Password" required />
+            <input [(ngModel)]="loginData.password" name="password" type="password" class="form-control" placeholder="Password"
+              required />
           </div>
           <button type="submit" class="btn btn-primary w-100">Login</button>
         </form>
@@ -46,4 +37,3 @@
     </div>
   </div>
 </div>
-

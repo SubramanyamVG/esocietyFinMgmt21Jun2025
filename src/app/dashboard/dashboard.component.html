@@ -8,19 +8,12 @@
 
     <ul class="nav flex-column nav-pills">
       <li class="nav-item mb-2">
-        <a class="nav-link text-white" routerLink="members" routerLinkActive="active">Manage Members</a>
-      </li>
-      <li class="nav-item mb-2">
-        <a class="nav-link text-white" routerLink="maintenance" routerLinkActive="active">Maintenance</a>
-      </li>
-      <li class="nav-item mb-2">
-        <a class="nav-link text-white" routerLink="payments" routerLinkActive="active">Payments</a>
-      </li>
-      <li class="nav-item mb-2">
-        <a class="nav-link text-white" routerLink="activities" routerLinkActive="active">Activities</a>
-      </li>
-      <li class="nav-item mb-2">
-        <a class="nav-link text-white" routerLink="reports" routerLinkActive="active">Reports</a>
+        <a class="nav-link text-white" 
+        *ngFor="let link of navigationLinks" 
+        [routerLink]="link.path" 
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        {{ link.label }}</a>
       </li>
     </ul>
   </nav>

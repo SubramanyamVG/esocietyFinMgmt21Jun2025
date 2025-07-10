@@ -56,7 +56,6 @@ const routes: Routes = [
       { path: '', redirectTo: 'members', pathMatch: 'full' } // default child
     ]
   },
-  // { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // app default
   { path: '', component: LoginComponent },
 ];
 
