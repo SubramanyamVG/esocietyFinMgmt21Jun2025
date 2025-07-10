@@ -67,10 +67,60 @@ export class MemberListComponent implements OnInit {
 
   ngOnInit() {
     // Fetch the members list from the service using firebase realtime database
+    
+    this.membersService.getMembersList().subscribe();
     this.fetchMembers();
   }
 
-  fetchMembers() {
+  fetchMembers(){
+    this.membersService.members$.subscribe({
+      next: (data: SocietyMember[]) => {
+        console.log('Fetched members from service:', data);
+        // Handle the fetched members data
+        if (!Array.isArray(data)) {
+          console.log('Data is not an array, checking for object structure...', data);
+          this.originalMembersObj = data;
+          this.members = Object.values(data || {});
+          return;
+        }
+      },
+      error: (error: any) => {
+        console.error('Error fetching members:', error);
+      }
+    });
+  }
+
+  fetchMembers2() {
+    // Fetch the members list from this.membersService.members$ observable
+    this.membersService.getMembersList().subscribe({
+      next: (data: SocietyMember[]) => {
+        // Assuming data is an array of SocietyMember objects
+        console.log('Fetched members:', data);
+        // Assign the fetched data to the members array
+        if (!Array.isArray(data)) {
+          console.log('Data is not an array, checking for object structure...', data);
+          this.originalMembersObj = data;
+          this.members = Object.values(data || {});
+          return;
+        }
+        // Assign the processed data to the members array
+        if (data.length === 0) {
+          console.warn('No members found in the fetched data.');
+        }
+        // Assign the fetched members to the component's members array
+        this.members = data;
+        // Optionally, you can sort the members by name or any other criteria
+        this.members.sort((a, b) => a.name.localeCompare(b.name));
+        // Log the fetched members to the console
+        console.log('Members fetched successfully:', this.members);
+      },
+      error: (error: any) => {
+        console.error('Error fetching members:', error);
+      }
+    });
+  }
+
+  fetchMembers1() {
     this.membersService.getMembersList().subscribe({
       next: (data: SocietyMember[]) => {
         // Assuming data is an array of SocietyMember objects
